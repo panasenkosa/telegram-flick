@@ -1,0 +1,55 @@
+# Telegram Flick Bot - Cursor Rules
+
+## Project Overview
+This is a Telegram bot that creates romantic videos from user photos using AI.
+
+## Tech Stack
+- TypeScript
+- Telegraf (Telegram Bot framework)
+- Prisma (ORM)
+- PostgreSQL (Database)
+- OpenAI GPT-Image (Image generation)
+- Replicate Wan-Video (Video generation)
+- MinIO (File storage)
+
+## Key Dependencies Versions
+- @ai-sdk/openai: version 1.x
+- ai (Vercel AI SDK): version 4.x
+- zod: version 3.x
+
+## Code Style
+- Use TypeScript with strict mode
+- Use ES modules (import/export)
+- Use async/await for asynchronous code
+- Use Prisma for all database operations
+- Handle errors gracefully with try-catch
+- Log important operations to console
+
+## File Structure
+- `src/bot/handlers/` - Telegram command and message handlers
+- `src/services/` - Business logic and external API integrations
+- `src/config/` - Configuration and environment variables
+- `prisma/` - Database schema and migrations
+
+## Development Guidelines
+1. Always validate environment variables with Zod
+2. Use BigInt for Telegram user IDs
+3. Handle Telegram API errors gracefully
+4. Store all files in MinIO
+5. Track all operations in database
+6. Implement proper session management
+7. Use transactions for critical operations
+8. Clean up temporary files after use
+
+## Testing
+- Test bot commands manually with a test Telegram account
+- Verify payment flow with Telegram Stars
+- Test photo upload and processing
+- Verify video generation and delivery
+
+## Deployment
+- Use Docker for production deployment
+- Ensure all environment variables are set
+- Run database migrations before starting
+- Set up proper logging and monitoring
+

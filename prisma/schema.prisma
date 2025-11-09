@@ -1,0 +1,106 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                BigInt        @id
+  username          String?
+  firstName         String?       @map("first_name")
+  lastName          String?       @map("last_name")
+  freeGenerations   Int           @default(1) @map("free_generations")
+  paidGenerations   Int           @default(0) @map("paid_generations")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  
+  generations       Generation[]
+  payments          Payment[]
+  
+  @@map("users")
+}
+
+model Generation {
+  id                String        @id @default(cuid())
+  userId            BigInt        @map("user_id")
+  
+  photo1Url         String?       @map("photo1_url")
+  photo2Url         String?       @map("photo2_url")
+  combinedImageUrl  String?       @map("combined_image_url")
+  videoUrl          String?       @map("video_url")
+  
+  status            GenerationStatus @default(PENDING)
+  errorMessage      String?       @map("error_message")
+  
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  completedAt       DateTime?     @map("completed_at")
+  
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("generations")
+}
+
+enum GenerationStatus {
+  PENDING
+  UPLOADING_PHOTOS
+  GENERATING_IMAGE
+  GENERATING_VIDEO
+  COMPLETED
+  FAILED
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  userId            BigInt        @map("user_id")
+  
+  amount            Int           // Amount in Telegram Stars
+  generationsAdded  Int           @map("generations_added")
+  
+  telegramPaymentId String        @unique @map("telegram_payment_id")
+  status            PaymentStatus @default(PENDING)
+  
+  createdAt         DateTime      @default(now()) @map("created_at")
+  completedAt       DateTime?     @map("completed_at")
+  
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model UserSession {
+  id                String        @id @default(cuid())
+  userId            BigInt        @unique @map("user_id")
+  
+  state             BotState      @default(IDLE)
+  currentGenerationId String?     @map("current_generation_id")
+  photosReceived    Int           @default(0) @map("photos_received")
+  
+  data              Json?         // Store temporary data like photo URLs
+  
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  
+  @@map("user_sessions")
+}
+
+enum BotState {
+  IDLE
+  WAITING_FOR_PHOTOS
+  PROCESSING
+}
+
