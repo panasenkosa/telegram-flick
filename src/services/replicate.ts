@@ -9,7 +9,7 @@ const replicate = new Replicate({
 export async function generateVideoFromImage(imageUrl: string): Promise<string> {
   try {
     const input = {
-      image: `${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/${imageUrl}`,
+      image: `${env.MINIO_ENDPOINT}:${env.MINIO_PORT}${imageUrl}`,
       prompt: `Close-up romantic scene: One person playfully and gently boops the other person's nose with their finger. 
       Both people are smiling and laughing in this sweet, affectionate moment. 
       The atmosphere is warm, friendly, and full of love and humor. 
