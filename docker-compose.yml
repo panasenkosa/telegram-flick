@@ -41,6 +41,9 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/telegram_flick?schema=public
@@ -54,6 +57,7 @@ services:
       MINIO_BUCKET: telegram-flick
       STARS_PRICE: 100
       FREE_GENERATIONS_LIMIT: 1
+      DEBUG: DEBUG=telegraf:* npm run dev
     restart: unless-stopped
 
 volumes:

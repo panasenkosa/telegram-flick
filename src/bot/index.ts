@@ -18,8 +18,13 @@ import {
 import { loggingMiddleware } from './middlewares/logging.js';
 import { errorMiddleware } from './middlewares/error.js';
 
+import { Agent } from 'node:https'
+
+
 export function createBot(): Telegraf {
-  const bot = new Telegraf(env.TELEGRAM_BOT_TOKEN);
+  const bot = new Telegraf(env.TELEGRAM_BOT_TOKEN, {
+    telegram: { agent: new Agent({ keepAlive: false }) }
+  });
 
   // Middlewares
   bot.use(loggingMiddleware());

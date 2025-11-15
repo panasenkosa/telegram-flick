@@ -3,8 +3,11 @@ import { ensureBucket } from './services/minio.js';
 import { prisma } from './services/database.js';
 import { logger } from './utils/logger.js';
 
+
+
 async function main() {
   logger.info('🚀 Starting Telegram Flick Bot...');
+
 
   try {
     // Initialize MinIO bucket
@@ -42,6 +45,7 @@ async function main() {
     try {
       const botInfo = await bot.telegram.getMe();
       logger.info(`✅ Bot token valid: @${botInfo.username}`);
+      logger.info('📡 Successfully reached Telegram API via getMe()');
     } catch (error) {
       logger.error('❌ Invalid bot token or connection failed:', error);
       throw error;
@@ -49,23 +53,10 @@ async function main() {
 
     // Launch bot with timeout
     logger.info('🚀 Launching bot...');
+
+    await bot.launch();
     
-    const launchTimeout = new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(new Error('Bot launch timeout after 60 seconds. This usually means:\n' +
-          '1. Telegram API is not accessible from Docker container\n' +
-          '2. Firewall is blocking outgoing connections\n' +
-          '3. Network issues\n\n' +
-          'Try running the bot locally outside Docker to test.'));
-      }, 60000);
-    });
-    
-    const launchPromise = bot.launch({
-      dropPendingUpdates: true,
-      allowedUpdates: ['message', 'callback_query', 'pre_checkout_query'],
-    });
-    
-    await Promise.race([launchPromise, launchTimeout]);
+    //await Promise.race([launchPromise, launchTimeout]);
     
     logger.info('✅ Bot started successfully!');
     logger.info('🎬 Romantic Flick Bot is now running...');

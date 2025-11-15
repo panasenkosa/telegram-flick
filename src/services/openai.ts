@@ -58,6 +58,9 @@ export async function createRomanticImage(
 
     const response = await client.images.edit({
       model: 'gpt-image-1',
+      //gpt-image-1-mini
+      //dall-e-3
+      //model: 'gpt-image-1-mini',
       image: images,
       prompt: prompt,
     });
