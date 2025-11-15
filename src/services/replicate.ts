@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
+  baseUrl: `${env.MINIO_ENDPOINT}:${env.MINIO_PORT}`
 });
 
 export async function generateVideoFromImage(imageUrl: string): Promise<string> {
