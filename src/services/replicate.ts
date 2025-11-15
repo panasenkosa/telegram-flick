@@ -3,14 +3,13 @@ import { env } from '../config/env.js';
 import axios from 'axios';
 
 const replicate = new Replicate({
-  auth: env.REPLICATE_API_TOKEN,
-  baseUrl: `${env.MINIO_ENDPOINT}:${env.MINIO_PORT}`
+  auth: env.REPLICATE_API_TOKEN
 });
 
 export async function generateVideoFromImage(imageUrl: string): Promise<string> {
   try {
     const input = {
-      image: imageUrl,
+      image: `${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/${imageUrl}`,
       prompt: `Close-up romantic scene: One person playfully and gently boops the other person's nose with their finger. 
       Both people are smiling and laughing in this sweet, affectionate moment. 
       The atmosphere is warm, friendly, and full of love and humor. 
