@@ -49,7 +49,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/telegram_flick?schema=public
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       REPLICATE_API_TOKEN: ${REPLICATE_API_TOKEN}
-      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
