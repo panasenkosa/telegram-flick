@@ -44,10 +44,10 @@ OPENAI_API_KEY=<your-openai-key>
 REPLICATE_API_TOKEN=<your-replicate-token>
 
 # 4. Start everything!
-docker-compose up -d
+docker compose up -d
 
 # 5. Check logs
-docker-compose logs -f bot
+docker compose logs -f bot
 ```
 
 That's it! Your bot is now running! 🎉
@@ -62,7 +62,7 @@ That's it! Your bot is now running! 🎉
 ## Stopping the Bot
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Troubleshooting
@@ -70,21 +70,28 @@ docker-compose down
 ### Bot not responding?
 ```bash
 # Check logs
-docker-compose logs bot
+docker compose logs bot
 
 # Restart bot
-docker-compose restart bot
+docker compose restart bot
 ```
 
 ### Database issues?
 ```bash
 # Reset database
-docker-compose down -v
-docker-compose up -d postgres
+docker compose down -v
+docker compose up -d postgres minio
+docker compose up -d postgres
 sleep 10
-docker-compose run --rm bot npx prisma db push
-docker-compose up -d bot
+docker compose run --rm bot npx prisma db push
+docker compose up -d bot
 ```
+# Удалить все остановленные контейнеры
+docker container prune
+docker volume prune
+docker image prune
+
+docker image rm telegram-flick-bot - при обновлении кода
 
 ### Need to see what's in the database?
 ```bash
@@ -106,7 +113,9 @@ npm install -g pnpm
 pnpm install
 
 # 2. Start services only (not the bot)
-docker-compose up -d postgres minio
+docker compose up -d postgres minio
+
+docker compose up -d --force-recreate bot
 
 # 3. Setup database
 pnpm db:push
@@ -123,7 +132,7 @@ See [SETUP.md](./SETUP.md) for detailed production setup instructions.
 
 - Check [SETUP.md](./SETUP.md) for detailed setup
 - Check [README.md](./README.md) for project overview
-- Review logs: `docker-compose logs -f bot`
+- Review logs: `docker compose logs -f bot`
 
 ## What's Next?
 
